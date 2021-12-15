@@ -2,7 +2,7 @@ import streamlit as st
 import pandas as pd
 from streamlit_folium import folium_static
 import folium
-import pathlib
+#import pathlib
 from folium import plugins
 hide_streamlit_style = """
             <style>
