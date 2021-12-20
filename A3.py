@@ -12,6 +12,7 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
+st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
 @st.cache(persist=True)
 def load_csv():
     df=pd.read_csv("Moby_November.csv")
@@ -21,12 +22,9 @@ def load_csv():
 def main():
     df=load_csv()
     st.title("Moby Bikes Accessibility")
-    st.write("A visualization that helps to determine how much area of Dublin has accessibility to Moby bikes based on the walking distance selected by the user")
-#st.title('Select')
+    st.write("A visualization that helps to determine how much area of Dublin has accessibility to Moby bikes based on the walking distance selected by the user. It also helps in determining the battery level of the cycle using the colour of the radius around the cycle and the state of the cycle is represented by the marker colour. The opacity of each circle also indicates the number of bikes present within that circle.")
     radius=st.sidebar.text_input('Enter Walking distance in m:')
     option = st.sidebar.radio('Select Bike Type',list(df['BikeTypeName'].unique()))
-
-
     m = folium.Map(location=[53.350140, -6.266155], zoom_start=12)
     colordict = {1: 'red', 2: 'blue', 3: 'black', 4: 'purple', 5:'lightgray'}
     bike_state_dict={1:'Warning - is in move and not rented',2:'Normal',3:'Switched Off',4:'Firmware Upgrade',5:'Laying on the ground'}
@@ -34,7 +32,6 @@ def main():
     colormap = colormap.to_step(index=[0,20,40,60,80,100])
     colormap.caption = 'Battery'
     colormap.add_to(m)
-    #FloatImage(image_file, bottom=0, left=86).add_to(m)
     marker_cluster = plugins.MarkerCluster().add_to(m)
     
     if(option!=''):
