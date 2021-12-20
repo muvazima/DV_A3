@@ -12,35 +12,22 @@ hide_streamlit_style = """
             footer {visibility: hidden;}
             </style>
             """
-#st.markdown(hide_streamlit_style, unsafe_allow_html=True) 
-# STREAMLIT_STATIC_PATH = pathlib.Path(st.__path__[0]) / 'static'
-# DOWNLOADS_PATH = (STREAMLIT_STATIC_PATH / "downloads")
-
 @st.cache(persist=True)
 def load_csv():
-    #df=pd.read_csv(str(DOWNLOADS_PATH / "moby_data_nov.csv"))
     df=pd.read_csv("Moby_November.csv")
     df=df[df['HarvestTime'] == df.groupby('BikeID')['HarvestTime'].transform('max')]
     return df
 
-def circle_color(battery):
-    if(battery<=20):
-        return '#3D3A00'
-    elif(battery>20 and battery<=60):
-        return '#0029E0'
-    else:
-        return '#004700'
-
 def main():
     df=load_csv()
     st.title("Moby Bikes Accessibility")
+    st.write("A visualization that helps to determine how much area of Dublin has accessibility to Moby bikes based on the walking distance selected by the user")
 #st.title('Select')
-    radius=st.sidebar.text_input('Enter radius in m')
+    radius=st.sidebar.text_input('Enter Walking distance in m:')
     option = st.sidebar.radio('Select Bike Type',list(df['BikeTypeName'].unique()))
 
 
     m = folium.Map(location=[53.350140, -6.266155], zoom_start=12)
-    #folium.TileLayer('cartodbpositron').add_to(m)
     colordict = {1: 'red', 2: 'blue', 3: 'black', 4: 'purple', 5:'lightgray'}
     bike_state_dict={1:'Warning - is in move and not rented',2:'Normal',3:'Switched Off',4:'Firmware Upgrade',5:'Laying on the ground'}
     colormap = branca.colormap.LinearColormap(['red', 'yellow', 'green'])
