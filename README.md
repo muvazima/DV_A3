@@ -1,5 +1,4 @@
-# DV_A3
-Visualization of Moby Bikes Availability
+# Visualization of Moby Bikes Availability
 
 ## To run
 $ streamlit run A3.py
